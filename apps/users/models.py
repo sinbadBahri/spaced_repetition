@@ -3,7 +3,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 
 class MyUserManager(BaseUserManager):
-    def create_user(self, email, date_of_birth, password=None):
+    def create_user(self, email, date_of_birth, password=None, **extra_fields):
         """
         Creates and saves a User with the given email, date of
         birth and password.
@@ -20,7 +20,7 @@ class MyUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, date_of_birth, password=None):
+    def create_superuser(self, email, date_of_birth, password=None, **extra_fields):
         """
         Creates and saves a superuser with the given email, date of
         birth and password.
@@ -44,6 +44,28 @@ class User(AbstractBaseUser):
     date_of_birth = models.DateField()
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+
+    first_name = models.CharField(verbose_name="first name", max_length=32, blank=True, null=True)
+    last_name = models.CharField(verbose_name="last name", max_length=32, blank=True, null=True)
+
+    PYTHON = 1
+    JAVASCRIPT = 2
+    RUST = 3
+    GOLANG = 4
+    PHP = 5
+    JAVA = 6
+
+    LANGUAGE_FIELDS = (
+        (PYTHON, 'Python'),
+        (JAVASCRIPT, 'JavaScript'),
+        (RUST, 'Rust'),
+        (GOLANG, 'Go'),
+        (PHP, 'php'),
+        (JAVA, 'Java'),
+    )
+    language = models.PositiveSmallIntegerField(default=PYTHON, choices=LANGUAGE_FIELDS)
+
+    company = models.CharField(max_length=32, blank=True, null=True)
 
     objects = MyUserManager()
 
