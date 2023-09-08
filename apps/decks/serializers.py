@@ -3,6 +3,9 @@ from .models import Deck
 
 
 class DeckSerializer(serializers.HyperlinkedModelSerializer):
+    """
+    Convert the Deck model instances into JSON format
+    """
 
     class Meta:
         model = Deck

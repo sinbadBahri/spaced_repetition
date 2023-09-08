@@ -3,7 +3,11 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 
 class MyUserManager(BaseUserManager):
-    def create_user(self, email, date_of_birth, password=None, **extra_fields):
+    """
+    A custom manager for the User model instead of Django UserManager.
+    """
+    def create_user(self, email, date_of_birth, first_name=None, last_name=None,
+                    language=1, company=None, password=None, **extra_fields):
         """
         Creates and saves a User with the given email, date of
         birth and password.
@@ -11,9 +15,16 @@ class MyUserManager(BaseUserManager):
         if not email:
             raise ValueError("Users must have an email address")
 
+        if not date_of_birth:
+            raise ValueError("Users must have a date of birth")
+
         user = self.model(
             email=self.normalize_email(email),
             date_of_birth=date_of_birth,
+            first_name=first_name,
+            last_name=last_name,
+            language=language,
+            company=company,
         )
 
         user.set_password(password)
@@ -25,10 +36,15 @@ class MyUserManager(BaseUserManager):
         Creates and saves a superuser with the given email, date of
         birth and password.
         """
+
         user = self.create_user(
             email,
             password=password,
             date_of_birth=date_of_birth,
+            first_name=None,
+            last_name=None,
+            language=1,
+            company=None,
         )
         user.is_admin = True
         user.save(using=self._db)
@@ -36,6 +52,10 @@ class MyUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
+    """
+    The User class is a custom implementation of the Django AbstractBaseUser model.
+    It represents a user in the system and provides functionalities for user authentication and authorization.
+    """
     email = models.EmailField(
         verbose_name="email address",
         max_length=255,
@@ -76,17 +96,20 @@ class User(AbstractBaseUser):
         return self.email
 
     def has_perm(self, perm, obj=None):
-        "Does the user have a specific permission?"
-        # Simplest possible answer: Yes, always
+        """
+        Does the user have a specific permission?
+        """
         return True
 
     def has_module_perms(self, app_label):
-        "Does the user have permissions to view the app `app_label`?"
-        # Simplest possible answer: Yes, always
+        """
+        Does the user have permissions to view the app `app_label`?
+        """
         return True
 
     @property
     def is_staff(self):
-        "Is the user a member of staff?"
-        # Simplest possible answer: All admins are staff
+        """
+        Is the user a member of staff?
+        """
         return self.is_admin

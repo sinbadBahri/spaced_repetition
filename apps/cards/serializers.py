@@ -3,6 +3,9 @@ from .models import Card
 
 
 class CardSerializer(serializers.ModelSerializer):
+    """
+    Converts Card model instances into JSON format.
+    """
 
     class Meta:
         model = Card
