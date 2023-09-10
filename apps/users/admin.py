@@ -4,7 +4,14 @@ from django.core.exceptions import ValidationError
 
 from .models import User
 
-admin.site.register(User)
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ['id', 'email', 'is_admin', 'is_staff', 'is_active']
+    list_editable = ['is_active']
+    list_filter = ['is_admin', "is_active", 'language']
+    search_fields = ['email', 'first_name', 'last_name', 'company']
+    list_per_page = 10
 
 
 class UserCreationForm(forms.ModelForm):

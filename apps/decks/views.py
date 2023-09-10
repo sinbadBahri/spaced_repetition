@@ -16,7 +16,6 @@ class DeckViewSet(viewsets.ModelViewSet):
     queryset = Deck.objects.all()
     serializer_class = DeckSerializer
 
-
 class DeckCardsViewSet(viewsets.ViewSet):
     """
     Handles the API endpoint for retrieving a list of cards associated with a specific deck.
