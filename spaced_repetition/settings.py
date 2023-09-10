@@ -1,10 +1,10 @@
 from pathlib import Path
+# I won't share local_settings on Github:
+from local_settings import *
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-vji$h+!2l^t2*e8=4bzyw*-bm(t=mk7ngkza*-16!rwdyk$ib^'
-
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -67,11 +67,11 @@ WSGI_APPLICATION = 'spaced_repetition.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'spaced_repetition',
-        'USER': 'sr_admin',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASS,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     }
 }
 
